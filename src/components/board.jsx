@@ -4,15 +4,56 @@ import _ from 'lodash';
 export default class Board extends React.Component {
   constructor(props) {
     super(props);
-    let board = Array(this.props.rows).fill(Array(this.props.cols).fill(false));
+
+    this.updateCell   = this.updateCell.bind(this);
+    this.setupBoard   = this.setupBoard.bind(this);
+    this.restartBoard = this.restartBoard.bind(this);
+
 
     this.state = {
       turn: 0,
-      currentShape: 'X',
+      currentShape: true,
       games: 0,
       disableAll: false,
-      board,
+      board: this.setupBoard(),
     };
+  }
+
+  updateCell(i, j) {
+    return (evt) => {
+      let newBoard = [... this.state.board];
+      newBoard[i][j].value = this.state.currentShape ? 'X' : 'O';
+      newBoard[i][j].disabled = true;
+      console.log(newBoard[i]);
+
+      this.setState({
+          currentShape: !this.state.currentShape,
+          board: newBoard
+      })
+    }
+  }
+
+  restartBoard() {
+    this.setState({
+        turn: 0,
+        currentShape: true,
+        disableAll: false,
+        board: this.setupBoard(),
+    })
+  }
+
+  setupBoard() {
+    let board = Array(this.props.rows);
+    return _.map(board, (row) => {
+      let col = [];
+      for(let i = 0; i < this.props.cols; i++) {
+        col.push({
+            value: '',
+            disabled: false
+        });
+      }
+      return col;
+    });
   }
 
   render() {
@@ -20,13 +61,19 @@ export default class Board extends React.Component {
       return (
         <div key={"rowi-" + i} className="row-container">{
           _.map(row, (col, j) => {
-            return (<div key={"case-" + j}>no</div>);
+            return (
+              <button 
+                style={{pointerEvents: col.disabled ? 'none' : 'initial'}}
+                className="tic-cell"
+                key={"case-" + j} 
+                onClick={this.updateCell(i, j)}>
+                  {col.value}
+              </button>
+            );
           })
         }</div>
       );
     });
-
-    console.log(vBoard);
 
     return (
       <div>
