@@ -17,6 +17,7 @@ export default class Board extends React.Component {
       games: 0,
       disableAll: false,
       board: this.setupBoard(),
+      moves: 0,
     };
   }
 
@@ -29,7 +30,8 @@ export default class Board extends React.Component {
 
       this.setState({
           currentShape: !this.state.currentShape,
-          board: newBoard
+          board: newBoard,
+          moves: this.state.moves + 1
       })
     }
   }
@@ -40,6 +42,7 @@ export default class Board extends React.Component {
         currentShape: true,
         disableAll: false,
         board: this.setupBoard(),
+        moves: 0
     })
   }
 
@@ -101,17 +104,27 @@ export default class Board extends React.Component {
     let winIndexCol = _.find(prevValColCount, (val) => val === this.props.rows);
     let winIndexDia = _.find(prevValDiaCount, (val) => val === this.props.cols);
 
+
     if(winIndexCol || winIndexRow || winIndexDia) {
       this.setState({
         disableAll: true,
-        winner: prevState.currentShape ? 'X' : 'O',
-        games: this.state.games + 1
+        winner: prevVal,
+        games: this.state.games + 1,
+        moves: 0
+      });
+    } else if(this.state.moves === this.props.cols * this.props.rows) {
+      this.setState({
+        disableAll: true,
+        winner: "None, it's a tie!",
+        games: this.state.games + 1,
+        moves: 0
       });
     }
 
     console.log(`${prevVal}: ${prevValColCount}`);
     console.log(`${prevVal}: ${prevValRowCount}`);
     console.log(`${prevVal}: ${prevValDiaCount}`);
+    console.log(`total: ${this.state.moves}`)
   }
 
   render() {
@@ -135,18 +148,22 @@ export default class Board extends React.Component {
     });
 
     return (
-      <div className="board-holder">
-        {vBoard}
-        <button
-          className="col-md-10"
-          style={{display: this.state.disableAll ? 'initial' : 'none'}}
-          onClick={this.restartBoard}>
-            Restart Game
-        </button>
-        { this.state.disableAll ? 
-          <h2 className="text-center">The winner is {this.state.winner}</h2> :
-          <h2 className="text-center">Its {this.state.currentShape ? 'X' : 'O'}s turn</h2>
-        }
+      <div className="parent-container">
+        <div className="game">
+          <div className="board-holder">
+          <h2 className="text-center">{this.props.cols} x {this.props.rows} Game!</h2>
+              {vBoard}
+              <button
+                style={{display: this.state.disableAll ? 'initial' : 'none'}}
+                onClick={this.restartBoard}>
+                  Restart Game
+              </button>
+          { this.state.disableAll ? 
+            <h2 className="text-center">The winner is {this.state.winner}</h2> :
+            <h2 className="text-center">Its {this.state.currentShape ? 'X' : 'O'}s turn</h2>
+          }
+          </div>
+        </div>
       </div>
     );
   }
