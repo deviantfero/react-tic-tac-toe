@@ -14,7 +14,6 @@ export default class Board extends React.Component {
     this.state = {
       winner: null,
       currentShape: true,
-      games: 0,
       disableAll: false,
       board: this.setupBoard(),
       moves: 0,
@@ -109,14 +108,12 @@ export default class Board extends React.Component {
       this.setState({
         disableAll: true,
         winner: prevVal,
-        games: this.state.games + 1,
         moves: 0
       });
     } else if(this.state.moves === this.props.cols * this.props.rows) {
       this.setState({
         disableAll: true,
         winner: "None, it's a tie!",
-        games: this.state.games + 1,
         moves: 0
       });
     }
