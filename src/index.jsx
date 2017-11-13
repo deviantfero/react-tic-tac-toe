@@ -22,10 +22,10 @@ function render(location) {
     renderComponent(<Game/>);
   } else if(args.length > 2 && args[1] === 'play') {
     let val = parseInt(args[2]);
-    if(!isNaN(val) && val > 2) {
+    if(!isNaN(val) && val > 2 && val < 25) {
       renderComponent(<Board cols={val} rows={val}/>);
     } else {
-      renderComponent(<Error404 reason={"wrong route for board :) enter /play/{valid number > 3}"}/>);
+      renderComponent(<Error404 reason={"Please use a valid number! {3 - 25}"}/>);
     }
   } else {
     renderComponent(<Error404/>);
