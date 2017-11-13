@@ -6,9 +6,15 @@ export default class Error404 extends React.Component {
   }
 
   render(){
-    let reason = this.props.reason || 'Unknown';
+    let reason = this.props.reason || 'Not found';
     return (
-      <div>Content not found, reason was: {reason}</div>
+      <div className="parent-container">
+        <div className="game">
+          <div className="board-holder">
+            <div>Error: {reason}</div>
+          </div>
+        </div>
+      </div>
     );
   }
 }
