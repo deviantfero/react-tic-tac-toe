@@ -10,7 +10,6 @@ export default class Game extends React.Component {
 
     this.state = {
       rows: 3,
-      cols: 3,
       game: false,
     };
   }
@@ -31,25 +30,23 @@ export default class Game extends React.Component {
 
   render() {
     console.log(this.state.rows, this.state.cols);
-    let board = this.state.game ? <Board cols={this.state.cols} rows={this.state.rows}/> : null;
+    let board = this.state.game ? <Board cols={this.state.rows} rows={this.state.rows}/> : null;
     return (
-      <div>
-        <h1>{this.state.cols} x {this.state.rows}</h1>
-        <input type="number" 
-          style={{display: this.state.game ? 'none' : 'initial'}}
-          value={this.state.cols} 
-          onChange={this.updateBoard("cols")}/>
-        <input type="number" 
-          style={{display: this.state.game ? 'none' : 'initial'}}
-          value={this.state.rows} 
-          onChange={this.updateBoard("rows")}/>
-        <button 
-          style={{display: this.state.game ? 'none' : 'initial'}}
-          type="button" 
-          onClick={this.startGame}>
-          Start Game
-        </button>
-        {board}
+      <div className="col-md-12">
+        <h1 className="col-md-12 text-center">{this.state.rows} x {this.state.rows} Tic Tac Toe</h1>
+        <div className="col-md-6" style={{display: this.state.game ? 'none' : 'initial'}}>
+          <input type="number" 
+            value={this.state.rows} 
+            onChange={this.updateBoard("rows")}/>
+          <button 
+            type="button" 
+            onClick={this.startGame}>
+            Start Game
+          </button>
+        </div>
+        <div className="board-container">
+          {board}
+        </div>
       </div>
     );
   }
