@@ -14,12 +14,12 @@ export default class Game extends React.Component {
     };
   }
 
-  updateBoard(which) {
+  updateBoard() {
     return (evt) => {
       let val = parseInt(evt.target.value);
       if(!isNaN(val) && val > 2) {
         this.setState({
-          [which]: parseInt(evt.target.value)
+          rows: parseInt(evt.target.value)
         });
       }
     };
@@ -34,20 +34,21 @@ export default class Game extends React.Component {
   render() {
     let board = this.state.game ? <Board cols={this.state.rows} rows={this.state.rows}/> : null;
     return (
-      <div className="col-md-12">
-        <h1 className="col-md-12 text-center">{this.state.rows} x {this.state.rows} Tic Tac Toe</h1>
-        <div className="col-md-6" style={{display: this.state.game ? 'none' : 'initial'}}>
-          <input type="number" 
-            value={this.state.rows} 
-            onChange={this.updateBoard("rows")}/>
-          <button 
-            type="button" 
-            onClick={this.startGame}>
-            Start Game
-          </button>
-        </div>
-        <div className="board-container">
-          {board}
+      <div className="board-container">
+        <div className="col-md-12">
+          <h1 className="col-md-12 text-center">{this.state.rows} x {this.state.rows} Tic Tac Toe</h1>
+          <div className="col-md-6" style={{display: this.state.game ? 'none' : 'initial'}}>
+          <form action={"/play/" + this.state.rows} method="GET">
+              <input type="number" 
+                value={this.state.rows} 
+                onChange={this.updateBoard()}/>
+              <button 
+                type="submit" 
+                onClick={this.startGame}>
+                Start Game
+              </button>
+          </form>
+          </div>
         </div>
       </div>
     );
