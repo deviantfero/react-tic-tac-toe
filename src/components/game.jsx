@@ -16,9 +16,12 @@ export default class Game extends React.Component {
 
   updateBoard(which) {
     return (evt) => {
-      this.setState({
-        [which]: parseInt(evt.target.value)
-      });
+      let val = parseInt(evt.target.value);
+      if(!isNaN(val) && val > 2) {
+        this.setState({
+          [which]: parseInt(evt.target.value)
+        });
+      }
     };
   }
 
@@ -29,7 +32,6 @@ export default class Game extends React.Component {
   }
 
   render() {
-    console.log(this.state.rows, this.state.cols);
     let board = this.state.game ? <Board cols={this.state.rows} rows={this.state.rows}/> : null;
     return (
       <div className="col-md-12">
